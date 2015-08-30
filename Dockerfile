@@ -31,12 +31,12 @@ RUN chmod u+w /var/vmail
 VOLUME ["/etc/mail-config"]
 VOLUME ["/var/vmail"]
 
-ADD init.sh /init.sh
+COPY init.sh /init.sh
 RUN chmod +x /init.sh
 ENTRYPOINT ["/init.sh"]
 
-ADD start.sh /strt.sh
+COPY start.sh /start.sh
 RUN chmod +x /start.sh
 ENTRYPOINT ["/start.sh"]
 
-EXPOSE 25, 143, 587
+EXPOSE 25/tcp 143/tcp 587/tcp
