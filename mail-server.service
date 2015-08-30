@@ -1,0 +1,25 @@
+[Unit]
+Description=Mail Server
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+RemainAfterExit=true
+ExecStartPre=-/usr/bin/docker kill mail-server
+ExecStartPre=-/usr/bin/docker rm -f mail-server
+#ExecStartPre=/usr/bin/docker pull darco/mail-server
+ExecStartPre=-/usr/bin/docker create --name="mail-server-backing" darco/mail-server
+ExecStart=/usr/bin/docker run \
+	-d \
+	--name mail-server \
+	-p 25:25/tcp \
+	-p 143:143/tcp \
+	-p 587:587/tcp \
+	--volumes-from=mail-server-backing \
+	darco/mail-server
+ExecStop=/usr/bin/docker stop -t 2 mail-server
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
