@@ -1,11 +1,14 @@
 #!/bin/sh
 
-set +x
+set -x
 
 mkdir /etc/postfix/tmp
 awk < /etc/mail-config/aliases '{ print $2 }' > /etc/postfix/tmp/virtual-receivers
 sed -r 's,(.+)@(.+),\2/\1/,' /etc/postfix/tmp/virtual-receivers > /etc/postfix/tmp/virtual-receiver-folders
 paste /etc/postfix/tmp/virtual-receivers /etc/postfix/tmp/virtual-receiver-folders > /etc/postfix/virtual-mailbox-maps
+
+[ -f "/etc/mail-config/host.crt.pem" ] && cp /etc/mail-config/host.crt.pem /etc/ssl/certs/ssl-cert-snakeoil.pem
+[ -f "/etc/mail-config/host.key.pem" ] && cp /etc/mail-config/host.key.pem /etc/ssl/private/ssl-cert-snakeoil.key
 
 postmap /etc/mail-config/aliases
 postmap /etc/postfix/virtual-mailbox-maps

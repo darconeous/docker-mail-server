@@ -9,7 +9,7 @@ ENV DEBUG=0
 
 RUN apt-get -y update \
 	&& DEBIAN_FRONTEND=noninteractive \
-	    apt-get install -y -q --no-install-recommends ssl-cert postfix postgrey dovecot-imapd
+	    apt-get install -y -q --no-install-recommends ssl-cert postfix postgrey dovecot-imapd rsyslog
 
 # postfix configuration
 RUN echo "mail.docker.container" > /etc/mailname
@@ -31,12 +31,14 @@ RUN chmod u+w /var/vmail
 VOLUME ["/etc/mail-config"]
 VOLUME ["/var/vmail"]
 
+COPY rsyslog.conf /etc/rsyslog.conf
+
 COPY init.sh /init.sh
 RUN chmod +x /init.sh
 ENTRYPOINT ["/init.sh"]
 
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
-ENTRYPOINT ["/start.sh"]
+CMD ["/start.sh"]
 
 EXPOSE 25/tcp 143/tcp 587/tcp
