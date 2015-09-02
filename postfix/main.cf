@@ -12,6 +12,9 @@ biff = no
 # appending .domain is the MUA's job.
 append_dot_mydomain = no
 
+# ipv4-only at the moment, because docker's IPv6 support sucks
+inet_protocols = ipv4
+
 # Uncomment the next line to generate "delayed mail" warnings
 #delay_warning_time = 4h
 
