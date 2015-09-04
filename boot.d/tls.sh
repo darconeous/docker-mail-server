@@ -1,40 +1,5 @@
 #!/bin/sh
 
-HOST_TLS_CRT="${HOST_TLS_CRT-/etc/mail-config/host.crt.pem}"
-HOST_TLS_REQ="${HOST_TLS_REQ-/etc/mail-config/host.req.pem}"
-HOST_TLS_KEY="${HOST_TLS_KEY-/etc/mail-config/host.key.pem}"
-
-# ----------------------------------------------------------------------
-
-if [ "${DEBUG-0}" = "0" ]
-then rm -f /etc/dovecot/conf.d/10-logging.conf
-else set -x
-fi
-
-# ----------------------------------------------------------------------
-
-mkdir /etc/postfix/tmp
-(
-	awk < /etc/mail-config/aliases '{ print $2 }'
-	cut -d ':' -f 1 < /etc/mail-config/passwd
-) | sort -u > /etc/postfix/tmp/virtual-receivers
-sed -r 's,(.+)@(.+),\2/\1/,' /etc/postfix/tmp/virtual-receivers > /etc/postfix/tmp/virtual-receiver-folders
-paste /etc/postfix/tmp/virtual-receivers /etc/postfix/tmp/virtual-receiver-folders > /etc/postfix/virtual-mailbox-maps
-postmap /etc/mail-config/aliases
-postmap /etc/postfix/virtual-mailbox-maps
-
-chown -R vmail:vmail /var/vmail
-
-# ----------------------------------------------------------------------
-
-if [ -f /etc/mail-config/hostname ] 
-then HOSTNAME=`head -n 1 /etc/mail-config/hostname`
-elif [ -f /etc/mail-config/domains ] 
-then HOSTNAME=`head -n 1 /etc/mail-config/domains`
-fi
-
-# ----------------------------------------------------------------------
-
 HOST_TLS_OPENSSL_CONF=/tmp/openssl.cnf
 cat > "${HOST_TLS_OPENSSL_CONF}" <<EOF
 [ req ]
@@ -64,7 +29,7 @@ DNS.1                  = ${HOSTNAME}
 EOF
 
 #domain_index=2
-#for domain in `cat /etc/mail-config/domains`
+#for domain in `cat ${MAIL_CONFIG_DIR}/domains`
 #do
 #	echo "DNS.$((domain_index)) = $domain" >> "${HOST_TLS_OPENSSL_CONF}"
 #	domain_index=$((domain_index+1))
@@ -95,6 +60,3 @@ openssl x509 -in "${HOST_TLS_CRT}" -noout -text
 cp "${HOST_TLS_CRT}" /etc/ssl/certs/ssl-cert-snakeoil.pem
 cp "${HOST_TLS_KEY}" /etc/ssl/private/ssl-cert-snakeoil.key
 
-# ----------------------------------------------------------------------
-
-exec "$@"

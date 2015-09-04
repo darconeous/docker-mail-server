@@ -63,10 +63,8 @@ recipient_delimiter = +
 #smtpd_recipient_restrictions = permit
 
 # Delivery to dovecot
-alias_maps = hash:/etc/aliases
-alias_database = hash:/etc/aliases
-virtual_alias_maps = hash:/etc/mail-config/aliases
-virtual_mailbox_domains = /etc/mail-config/domains
+virtual_alias_maps = hash:/etc/postfix/virtual-aliases
+virtual_mailbox_domains = /etc/postfix/virtual-domains
 virtual_mailbox_maps = hash:/etc/postfix/virtual-mailbox-maps
 virtual_transport = dovecot
 dovecot_destination_recipient_limit = 1

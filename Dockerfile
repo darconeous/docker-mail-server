@@ -4,23 +4,22 @@ FROM debian:wheezy
 #  * /etc/mail-config - User and domain configuration
 #  * /var/vmail - mail storage location
 
-# Override this to get more logging
-ENV DEBUG=0
-
 RUN apt-get -y update \
 	&& DEBIAN_FRONTEND=noninteractive \
 	    apt-get install -y -q --no-install-recommends ssl-cert postfix postgrey dovecot-imapd rsyslog
+
+# Default Environment Variables
+ENV DEBUG=0
+ENV MAIL_CONFIG_DIR=/etc/mail-config/
 
 # postfix configuration
 RUN echo "mail.docker.container" > /etc/mailname
 ADD postfix /etc/postfix/
 ADD dovecot /etc/dovecot/
-ADD mail-config /etc/mail-config/
-
-RUN ln -s /etc/mail-config/passwd /etc/dovecot/passwd
-
-# !?!?
+ADD mail-config $MAIL_CONFIG_DIR
 RUN cat /etc/postfix/master-additional.cf >> /etc/postfix/master.cf
+
+ADD boot.d /boot.d/
 
 # add user vmail who own all mail folders
 RUN groupadd -g 5000 vmail
@@ -28,14 +27,14 @@ RUN useradd -g vmail -u 5000 vmail -d /var/vmail -m
 RUN chown -R vmail:vmail /var/vmail
 RUN chmod u+w /var/vmail
 
-VOLUME ["/etc/mail-config"]
+VOLUME ["$MAIL_CONFIG_DIR"]
 VOLUME ["/var/vmail"]
 
 COPY rsyslog.conf /etc/rsyslog.conf
 
-COPY init.sh /init.sh
-RUN chmod +x /init.sh
-ENTRYPOINT ["/init.sh"]
+COPY boot.sh /boot.sh
+RUN chmod +x /boot.sh
+ENTRYPOINT ["/boot.sh"]
 
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
