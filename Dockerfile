@@ -40,4 +40,4 @@ COPY start.sh /start.sh
 RUN chmod +x /start.sh
 CMD ["/start.sh"]
 
-EXPOSE 25/tcp 143/tcp 587/tcp
+EXPOSE 25/tcp 143/tcp 587/tcp 38190/tcp

@@ -9,8 +9,8 @@ env_dump=$(printenv)
 AMAVIS_CONFIG_HEADER="# Amavis - dockermail - start"
 AMAVIS_CONFIG_FOOTER="# Amavis - dockermail - end"
 
-AMAVIS_PORT_10024_TCP_ADDR=${AMAVIS_PORT_10024_TCP_ADDR-amavis}
-AMAVIS_PORT_10024_TCP_PORT=${AMAVIS_PORT_10024_TCP_PORT-10024}
+AMAVIS_PORT_10024_TCP_ADDR="${AMAVIS_PORT_10024_TCP_ADDR-amavis}"
+AMAVIS_PORT_10024_TCP_PORT="${AMAVIS_PORT_10024_TCP_PORT-10024}"
 
 function remove_amavis () {
   # main.cf
@@ -68,7 +68,7 @@ function add_amavis () {
 
 if [[ $env_dump =~ ^(.+AMAVIS)= ]] ; then
   if [ ! -z "${BASH_REMATCH[1]}" ]; then
-    echo "AMAVIS env set, enabling SPAM filter"
+    echo "AMAVIS on ${AMAVIS_PORT_10024_TCP_ADDR}:${AMAVIS_PORT_10024_TCP_PORT}, enabling SPAM filter"
     add_amavis
   fi
 else

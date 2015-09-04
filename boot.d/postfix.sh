@@ -20,3 +20,16 @@ chown -R vmail:vmail /var/vmail
 # Give postfix ownership of its files
 chown -R postfix:postfix /etc/postfix
 
+disable_ipv6_prefix="# DISABLE IPv6 START"
+disable_ipv6_suffix="# DISABLE IPv6 STOP"
+
+sed "/${disable_ipv6_prefix}/,/${disable_ipv6_suffix}/d" "/etc/postfix/main.cf" -i
+
+# If IPv6 doesn't work, then disable IPv6.
+ping6 -c 1 -w 3 google.com 2>/dev/null 1>/dev/null || {
+	echo "postfix: IPv6 doesn't work, disabling IPv6" 1>&2
+	echo "${disable_ipv6_prefix}" >> /etc/postfix/main.cf 
+	echo "inet_protocols = ipv4" >> /etc/postfix/main.cf 
+	echo "${disable_ipv6_suffix}" >> /etc/postfix/main.cf 
+}
+
