@@ -1,0 +1,2 @@
+#/./   FILTER dspam:unix:/run/dspam/dspam.sock
+/./   FILTER dspam:dspam

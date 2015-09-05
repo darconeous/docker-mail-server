@@ -4,7 +4,11 @@
 
 /usr/sbin/rsyslogd -n -c5 &
 
-service postgrey start;
+dspam --daemon --debug
+
+postgrey --daemon --dbdir=/var/vmail/postgrey
+
+#service postgrey start;
 service postfix start;
 
 exec dovecot -F

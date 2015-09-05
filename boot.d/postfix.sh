@@ -17,6 +17,14 @@ postmap /etc/postfix/virtual-mailbox-maps
 
 chown -R vmail:vmail /var/vmail
 
+mkdir -p /var/vmail/postgrey
+chown -R postgrey:postgrey /var/vmail/postgrey
+
+mkdir -p /var/vmail/dspam
+mkdir -p /var/run/dspam
+chown -R dspam:dspam /var/vmail/dspam
+chown -R dspam:dspam /var/run/dspam
+
 # Give postfix ownership of its files
 chown -R postfix:postfix /etc/postfix
 

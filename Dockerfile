@@ -6,7 +6,7 @@ FROM debian:wheezy
 
 RUN apt-get -y update \
 	&& DEBIAN_FRONTEND=noninteractive \
-	    apt-get install -y -q --no-install-recommends ssl-cert postfix postgrey dovecot-imapd rsyslog
+	    apt-get install -y -q --no-install-recommends ssl-cert postfix postgrey dovecot-imapd rsyslog dspam dovecot-antispam postfix-pcre dovecot-sieve
 
 # Default Environment Variables
 ENV DEBUG=0
@@ -16,8 +16,11 @@ ENV MAIL_CONFIG_DIR=/etc/mail-config/
 RUN echo "mail.docker.container" > /etc/mailname
 ADD postfix /etc/postfix/
 ADD dovecot /etc/dovecot/
+ADD dspam /etc/dspam/
 ADD mail-config $MAIL_CONFIG_DIR
 RUN cat /etc/postfix/master-additional.cf >> /etc/postfix/master.cf
+
+RUN mkdir -p /var/run/dspam/ && mkdir -p /var/vmail/dspam/
 
 ADD boot.d /boot.d/
 
