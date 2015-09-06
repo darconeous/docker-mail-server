@@ -1,6 +1,8 @@
 #!/bin/bash
 echo 'Running amavis boot script'
 
+[ "${DEBUG-0}" = "0" ] || set -x
+
 POSTFIX_MAIN_CF=/etc/postfix/main.cf
 POSTFIX_MASTER_CF=/etc/postfix/master.cf
 

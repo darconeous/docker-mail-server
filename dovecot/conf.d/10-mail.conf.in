@@ -1,5 +1,5 @@
-mail_location = maildir:/var/vmail/%d/%n
-#mail_location = maildir:/var/vmail/%d/%n:LAYOUT=fs
+mail_location = maildir:@MAIL_VHOST_DATA_DIR@/%d/%n
+#mail_location = maildir:@MAIL_VHOST_DATA_DIR@/%d/%n:LAYOUT=fs
 
 namespace inbox {
   inbox = yes

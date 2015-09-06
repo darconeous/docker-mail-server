@@ -52,10 +52,10 @@ openssl req -new -key "${HOST_TLS_KEY}" -out "${HOST_TLS_REQ}" -extensions v3_ca
 if [ '!' -f "${HOST_TLS_CRT}" ]
 then
 	openssl req -x509 -nodes -days 3650 -key "${HOST_TLS_KEY}" -out "${HOST_TLS_CRT}" -extensions v3_ca -config "${HOST_TLS_OPENSSL_CONF}" < "${HOST_TLS_REQ}"
-	openssl x509 -in "${HOST_TLS_CRT}" -noout -text
+	#openssl x509 -in "${HOST_TLS_CRT}" -noout -text
 fi
 
-openssl x509 -in "${HOST_TLS_CRT}" -noout -text
+#openssl x509 -in "${HOST_TLS_CRT}" -noout -text
 
 cp "${HOST_TLS_CRT}" /etc/ssl/certs/ssl-cert-snakeoil.pem
 cp "${HOST_TLS_KEY}" /etc/ssl/private/ssl-cert-snakeoil.key
