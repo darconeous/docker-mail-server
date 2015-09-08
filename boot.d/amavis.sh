@@ -70,11 +70,11 @@ function add_amavis () {
 
 if [[ $env_dump =~ ^(.+AMAVIS)= ]] ; then
   if [ ! -z "${BASH_REMATCH[1]}" ]; then
-    echo "AMAVIS on ${AMAVIS_PORT_10024_TCP_ADDR}:${AMAVIS_PORT_10024_TCP_PORT}, enabling SPAM filter"
+    echo "AMAVIS on ${AMAVIS_PORT_10024_TCP_ADDR}:${AMAVIS_PORT_10024_TCP_PORT}"
     add_amavis
   fi
 else
-  echo "Cant find AMAVIS env, SPAM filter will be disabled"
+  echo "Cant find AMAVIS env, AMAVIS disabled"
   remove_amavis
 fi
 

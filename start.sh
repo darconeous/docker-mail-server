@@ -3,7 +3,6 @@
 cleanup () {
 	echo Cleaning up...
 	service postfix stop
-	service postgrey stop
 	service dspam stop
 }
 
@@ -19,9 +18,6 @@ die () {
 /usr/sbin/rsyslogd -n -c5 &
 
 dspam --daemon --debug
-
-
-service postgrey start || die "Unable to start postgrey"
 
 service postfix start || die "Unable to start postfix service"
 

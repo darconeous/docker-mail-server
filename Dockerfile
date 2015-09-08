@@ -5,12 +5,11 @@ FROM debian:wheezy
 #  * MAIL_DATA_DIR     -> /data
 #  * MAIL_VHOST_DATA_DIR    -> /data/vhost
 #  * MAIL_DSPAM_DATA_DIR    -> /data/dspam
-#  * MAIL_POSTGREY_DATA_DIR -> /data/postgrey
 #  * MAIL_POSTFIX_DATA_DIR  -> /data/postfix
 
 RUN apt-get -y update \
 	&& DEBIAN_FRONTEND=noninteractive \
-	    apt-get install -y -q --no-install-recommends ssl-cert postfix postgrey dovecot-imapd rsyslog dspam dovecot-antispam postfix-pcre dovecot-sieve
+	    apt-get install -y -q --no-install-recommends ssl-cert postfix dovecot-imapd rsyslog dspam dovecot-antispam postfix-pcre dovecot-sieve
 
 # Default Environment Variables
 ENV DEBUG=0
@@ -18,7 +17,6 @@ ENV MAIL_CONFIG_DIR=/etc/mail-config/
 ENV MAIL_DATA_DIR=/data
 ENV MAIL_VHOST_DATA_DIR=$MAIL_DATA_DIR/vhost
 ENV MAIL_DSPAM_DATA_DIR=$MAIL_DATA_DIR/dspam
-ENV MAIL_POSTGREY_DATA_DIR=$MAIL_DATA_DIR/postgrey
 ENV MAIL_POSTFIX_DATA_DIR=$MAIL_DATA_DIR/postfix
 
 # postfix configuration
@@ -31,9 +29,9 @@ RUN cat /etc/postfix/master-additional.cf >> /etc/postfix/master.cf
 
 RUN mkdir -p /var/run/dspam/ /var/run/dovecot/ /var/run/postfix
 
-RUN mkdir -p ${MAIL_VHOST_DATA_DIR} ${MAIL_DSPAM_DATA_DIR} ${MAIL_POSTGREY_DATA_DIR}
+RUN mkdir -p ${MAIL_VHOST_DATA_DIR} ${MAIL_DSPAM_DATA_DIR}
 
-RUN cp -a -r /var/spool/postfix ${MAIL_POSTGREY_DATA_DIR}
+RUN cp -a -r /var/spool/postfix ${MAIL_POSTFIX_DATA_DIR}
 
 ADD boot.d /boot.d/
 

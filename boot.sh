@@ -17,8 +17,8 @@ fi
 TEMPFILE=/tmp/sedscript
 
 (
-	env | grep "^MAIL_"
-) | sed -n -E 's:^([a-zA-Z][-_a-zA-Z0-9]*) *= *([^/#]*[^/]):s/@\1@/\2/g;:p;s/^([a-zA-Z][-_a-zA-Z0-9]*) *= *([^:#]*[^:])/s:@\1@:\2:g;/p;
+	env | grep -e "^MAIL_" -e "^AMAVIS_" -e "^POSTGREY_" -e "^DSPAM_"
+) | sed -n -E 's:[\]:\\\\:g;s:/:\\/:g;s:^([a-zA-Z][-_a-zA-Z0-9]*) *= *([^#]*):s/@\1@/\2/g;:p;
 ' > "$TEMPFILE" || die
 
 for infile in `find /etc -name '*.in'` ;
