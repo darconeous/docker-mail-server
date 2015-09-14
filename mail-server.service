@@ -18,7 +18,7 @@ ExecStart=/usr/bin/docker run \
 	-p 587:587/tcp \
 	--volumes-from=mail-server-backing \
 	darco/mail-server
-ExecStop=/usr/bin/docker stop -t 2 mail-server
+ExecStop=/usr/bin/docker stop -t 5 mail-server
 
 [Install]
 WantedBy=multi-user.target

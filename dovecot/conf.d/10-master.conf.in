@@ -13,6 +13,8 @@ service imap {
 
 }
 
+shutdown_clients = yes
+
 # not sure if this is needed
 service lmtp {
 	unix_listener @MAIL_POSTFIX_DATA_DIR@/private/dovecot-lmtp {

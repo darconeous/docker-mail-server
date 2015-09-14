@@ -11,7 +11,7 @@ passdb {
 
 userdb {
     driver = static
-    args = uid=vmail gid=vmail home=/var/vmail/%d/%n allow_all_users=yes
+    args = uid=vmail gid=vmail home=@MAIL_VHOST_DATA_DIR@/%d/%n allow_all_users=yes
 }
 
 

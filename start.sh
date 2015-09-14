@@ -6,7 +6,7 @@ cleanup () {
 	service dspam stop
 }
 
-trap cleanup EXIT SIGINT SIGTERM
+trap cleanup EXIT
 
 die () {
 	echo "FATAL: ${1-Unknown}"

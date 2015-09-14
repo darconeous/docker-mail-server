@@ -14,9 +14,8 @@ mkdir /etc/postfix/tmp
 sed -r 's,(.+)@(.+),\2/\1/,' /etc/postfix/tmp/virtual-receivers > /etc/postfix/tmp/virtual-receiver-folders
 paste /etc/postfix/tmp/virtual-receivers /etc/postfix/tmp/virtual-receiver-folders > /etc/postfix/virtual-mailbox-maps
 
-usermod -m -d "${MAIL_POSTFIX_DATA_DIR}" postfix
-usermod -m -d "${MAIL_DSPAM_DATA_DIR}" dspam
-usermod -m -d "${MAIL_POSTGREY_DATA_DIR}" postgrey
+usermod -m -d "${MAIL_POSTFIX_DATA_DIR}" postfix 2>/dev/null
+usermod -m -d "${MAIL_DSPAM_DATA_DIR}" dspam 2>/dev/null
 
 cp ${MAIL_CONFIG_DIR}/aliases /etc/postfix/virtual-aliases
 cp ${MAIL_CONFIG_DIR}/domains /etc/postfix/virtual-domains
@@ -25,9 +24,6 @@ postmap /etc/postfix/virtual-aliases
 postmap /etc/postfix/virtual-mailbox-maps
 
 chown -R vmail:vmail "${MAIL_VHOST_DATA_DIR}"
-
-mkdir -p "${MAIL_POSTGREY_DATA_DIR}"
-chown -R postgrey:postgrey "${MAIL_POSTGREY_DATA_DIR}"
 
 mkdir -p "${MAIL_DSPAM_DATA_DIR}"
 chown -R dspam:dspam "${MAIL_DSPAM_DATA_DIR}"
