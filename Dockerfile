@@ -9,7 +9,7 @@ FROM debian:wheezy
 
 RUN apt-get -y update \
 	&& DEBIAN_FRONTEND=noninteractive \
-	    apt-get install -y -q --no-install-recommends ssl-cert postfix dovecot-imapd rsyslog dspam dovecot-antispam postfix-pcre dovecot-sieve
+	    apt-get install -y -q --no-install-recommends ssl-cert postfix dovecot-imapd rsyslog dspam dovecot-antispam postfix-pcre dovecot-sieve psmisc
 
 # Default Environment Variables
 ENV DEBUG=0
